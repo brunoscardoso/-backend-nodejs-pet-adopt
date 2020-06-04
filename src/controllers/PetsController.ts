@@ -3,10 +3,11 @@ import knex from '../database/connection';
 
 class PetsController {
   async create (request: Request, response: Response) {
-    const { name, uf, city, latitude, longitude  } = request.body;
+    const { name, size, uf, city, latitude, longitude  } = request.body;
 
     const pet = {
       name,
+      size,
       photo: 'https://www.hypeness.com.br/wp-content/uploads/2019/09/Vira-lata_Caramelo_3.jpg',
       uf,
       city,
@@ -35,7 +36,9 @@ class PetsController {
     const serializedPets = pets.map(pet => {
       return {
         id: pet.id,
+        created_at: pet.created_at,
         name: pet.name,
+        size: pet.size,
         uf : pet.uf,
         city: pet.city,
         latitude: pet.latitude,
