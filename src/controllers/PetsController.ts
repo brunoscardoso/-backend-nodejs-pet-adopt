@@ -1,6 +1,14 @@
 import { Request, Response } from 'express'
 import knex from '../database/connection';
 
+interface PetsArray {
+  id: number;
+  name: string;
+  size: string;
+  gender: string;
+  photo_url: string;
+}
+
 class PetsController {
   async create (request: Request, response: Response) {
     const { name, size, gender, uf, city, latitude, longitude  } = request.body;
@@ -55,13 +63,32 @@ class PetsController {
   async show (request: Request, response: Response) {
     const { id } = request.params;
 
-    const pet = await knex('adopts').where('id', id).first();
-    
-    if (!pet) {
+    const pets = await knex('adopts')
+    .where('id', String(id))
+    .distinct()
+    .select('*');
+
+    if (!pets) {
       return response.status(400).json({ message: 'Pet not found!'});
     }
 
-    return response.json(pet);
+    const serializedPets = pets.map(pet => {
+      return {
+        id: pet.id,
+        created_at: pet.created_at,
+        name: pet.name,
+        size: pet.size,
+        gender: pet.gender,
+        uf : pet.uf,
+        city: pet.city,
+        latitude: pet.latitude,
+        longitude: pet.longitude,
+        photo_url: `http://localhost:3333/uploads/${pet.photo}`,
+      }
+    })
+   
+    return response.json(serializedPets);
+  
   }
 }
 
