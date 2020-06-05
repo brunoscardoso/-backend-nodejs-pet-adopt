@@ -9,7 +9,7 @@ class PetsController {
       name,
       size,
       gender,
-      photo: 'https://www.hypeness.com.br/wp-content/uploads/2019/09/Vira-lata_Caramelo_3.jpg',
+      photo: request.file.filename,
       uf,
       city,
       latitude,
