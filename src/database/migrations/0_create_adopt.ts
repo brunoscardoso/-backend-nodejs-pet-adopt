@@ -6,6 +6,7 @@ export async function up(knex: Knex) {
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.string('name').notNullable();
     table.string('size').notNullable();
+    table.string('gender').notNullable();
     table.string('photo').notNullable();
     table.string('city').notNullable();
     table.string('uf', 2).notNullable();

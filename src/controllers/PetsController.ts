@@ -3,11 +3,12 @@ import knex from '../database/connection';
 
 class PetsController {
   async create (request: Request, response: Response) {
-    const { name, size, uf, city, latitude, longitude  } = request.body;
+    const { name, size, gender, uf, city, latitude, longitude  } = request.body;
 
     const pet = {
       name,
       size,
+      gender,
       photo: 'https://www.hypeness.com.br/wp-content/uploads/2019/09/Vira-lata_Caramelo_3.jpg',
       uf,
       city,
@@ -39,6 +40,7 @@ class PetsController {
         created_at: pet.created_at,
         name: pet.name,
         size: pet.size,
+        gender: pet.gender,
         uf : pet.uf,
         city: pet.city,
         latitude: pet.latitude,
