@@ -7,6 +7,7 @@ interface PetsArray {
   size: string;
   gender: string;
   photo_url: string;
+  adopted: boolean;
 }
 
 class PetsController {
@@ -35,6 +36,7 @@ class PetsController {
     const pets = await knex('adopts')
     .where('city', String(city))
     .where('uf', String(uf))
+    .where('adopted', 0)
     .distinct()
     .select('*');
 
@@ -54,6 +56,7 @@ class PetsController {
         latitude: pet.latitude,
         longitude: pet.longitude,
         photo_url: `http://localhost:3333/uploads/${pet.photo}`,
+        adopted: false,
       }
     })
 
@@ -84,11 +87,24 @@ class PetsController {
         latitude: pet.latitude,
         longitude: pet.longitude,
         photo_url: `http://localhost:3333/uploads/${pet.photo}`,
+        adopted: false
       }
-    })
+    });
    
     return response.json(serializedPets);
   
+  }
+
+  async update(request: Request, response: Response) {
+    const { id } = request.params;
+
+    const pets = await knex('adopts')
+    .update('adopted', 1)
+    .where('id', String(id))
+    .distinct()
+    .select('*')
+
+    return response.json({message: "updated, adopted true"});
   }
 }
 
