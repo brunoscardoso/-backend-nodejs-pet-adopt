@@ -13,6 +13,7 @@ export async function up(knex: Knex) {
     table.decimal('latitude').notNullable();
     table.decimal('longitude').notNullable();
     table.boolean('adopted').notNullable().defaultTo(false);
+    table.boolean('gifted').notNullable().defaultTo(false);
   });
 }
 
