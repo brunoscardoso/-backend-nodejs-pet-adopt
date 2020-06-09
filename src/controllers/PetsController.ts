@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import knex from '../database/connection';
+import crypto from 'crypto';
 
 interface PetsArray {
   id: number;
@@ -98,13 +99,26 @@ class PetsController {
   async update(request: Request, response: Response) {
     const { id } = request.params;
 
-    const pets = await knex('adopts')
-    .update('adopted', 1)
+    const hash = crypto.randomBytes(2).toString('hex');
+
+    const find = await knex('adopts')
+    .where('id', String(id))
+    .where('adopted', 0)
+    .distinct()
+    .select('*')
+
+    if (find.length <= 0) {
+      return response.status(400).json({ message: 'Pet has have adopted'});
+    }
+
+    const update = await knex('adopts')
+    .update('adopted', true)
+    .update('gifted_code', String(`${hash}`))
     .where('id', String(id))
     .distinct()
     .select('*')
 
-    return response.json({message: "updated, adopted true"});
+    return response.json(hash);
   }
 }
 

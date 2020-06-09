@@ -14,6 +14,7 @@ export async function up(knex: Knex) {
     table.decimal('longitude').notNullable();
     table.boolean('adopted').notNullable().defaultTo(false);
     table.boolean('gifted').notNullable().defaultTo(false);
+    table.string('gifted_code').nullable();
   });
 }
 
