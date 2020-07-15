@@ -1,9 +1,9 @@
 import Knex from 'knex';
 
 export async function up(knex: Knex) {
-  return knex.schema.createTable('adopts' , table => {
+  return knex.schema.createTable('adopts', (table) => {
     table.increments('id').primary();
-    table.timestamp('created_at').defaultTo(knex.fn.now());
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
     table.string('name').notNullable();
     table.string('size').notNullable();
     table.string('gender').notNullable();
@@ -14,7 +14,7 @@ export async function up(knex: Knex) {
     table.decimal('longitude').notNullable();
     table.boolean('adopted').notNullable().defaultTo(false);
     table.boolean('gifted').notNullable().defaultTo(false);
-    table.string('gifted_code').nullable();
+    table.string('giftedCode').nullable();
   });
 }
 
